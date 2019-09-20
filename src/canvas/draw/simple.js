@@ -86,7 +86,6 @@ export default {
 
                 context.beginPath();
 
-                pathSimple.draw(context, item, options);
                 options.multiPolygonDraw = function() {
                     context.fill();
 
@@ -94,6 +93,7 @@ export default {
                         context.stroke();
                     }
                 }
+                pathSimple.draw(context, item, options);
 
                 if (type == 'Point' || type == 'Polygon' || type == 'MultiPolygon') {
 
