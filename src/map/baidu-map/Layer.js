@@ -291,8 +291,10 @@ class Layer extends BaseLayer{
     hide() {
         this.map.removeOverlay(this.canvasLayer);
         this.visible = false;
-        //恢复默认的鼠标形状
-        super.resetCursor();
+        if(this.options.hoverCursor){
+            //恢复默认的鼠标形状。因为鼠标可能在图层显示的过程中，被set成options.hoverCursor中指定的图形了，此时如果hide，鼠标形状就变不回去了
+            super.resetCursor();
+        }
     }
 
     draw() {

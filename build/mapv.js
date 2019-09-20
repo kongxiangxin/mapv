@@ -4380,6 +4380,10 @@ var BaseLayer = function () {
 
                 var geoType = data[i].geometry && data[i].geometry.type;
                 if (geoType.indexOf('LineString') > -1) {
+                    if (this.options.mouseLineWidth) {
+                        //LineString太不容易命中isPointInStroke了，给他设置一个线宽，提高命中率
+                        context.lineWidth = this.options.mouseLineWidth;
+                    }
                     if (context.isPointInStroke && context.isPointInStroke(x, y)) {
                         return data[i];
                     }
@@ -5107,8 +5111,10 @@ var Layer = function (_BaseLayer) {
         value: function hide() {
             this.map.removeOverlay(this.canvasLayer);
             this.visible = false;
-            //恢复默认的鼠标形状
-            get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), "resetCursor", this).call(this);
+            if (this.options.hoverCursor) {
+                //恢复默认的鼠标形状。因为鼠标可能在图层显示的过程中，被set成options.hoverCursor中指定的图形了，此时如果hide，鼠标形状就变不回去了
+                get(Layer.prototype.__proto__ || Object.getPrototypeOf(Layer.prototype), "resetCursor", this).call(this);
+            }
         }
     }, {
         key: "draw",
